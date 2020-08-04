@@ -2,7 +2,6 @@
   <div ref="mindmap" id="mindmap" :style="mmStyle">
     <svg ref="svg" tabindex="0" :class="svgClass">
       <g ref="content" id="content" />
-      <rect v-show="showSelectedBox" id="selectedBox" width="24" height="24" />
     </svg>
     <div ref="dummy" id="dummy"></div>
     <div
@@ -22,6 +21,7 @@
         <div>{{ item.title }}</div>
       </div>
     </div>
+
     <div class="buttonList right-bottom">
       <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()">
         <i class="gps"></i>
@@ -39,6 +39,7 @@
         <i class="download"></i>
       </button>
     </div>
+
     <div class="buttonList top-right">
       <button
         v-show="showUndo"
@@ -61,6 +62,7 @@
         <i class="redo"></i>
       </button>
     </div>
+
     <div class="pop-ups" v-show="showPopUps">
       <div class="layer"></div>
       <div class="content">
@@ -164,7 +166,7 @@ export default {
     root: Object, // 包含位置信息的mmdata
     showContextMenu: false,
     showPopUps: false,
-    showSelectedBox: false, // 选中框
+
     contextMenuX: 0,
     contextMenuY: 0,
     contextMenuItems: [
@@ -250,6 +252,7 @@ export default {
       this.mindmap_svg = d3.select(this.$refs.svg)
       this.mindmap_g = d3.select(this.$refs.content).style('opacity', 0)
       this.dummy = d3.select(this.$refs.dummy)
+
       // 绑定svg事件
       this.makeKeyboard(this.keyboard)
       this.mindmap_svg.on('contextmenu', () => {
@@ -1196,6 +1199,7 @@ export default {
         newVal => {
           if (this.toUpdate) {
             mmdata = new ImData(newVal[0], this.getTextSize)
+            console.log(mmdata)
             this.updateMmdata()
           } else {
             this.toUpdate = true
@@ -1208,8 +1212,7 @@ export default {
   },
   async mounted() {
     this.init()
-    // this.mindmap_svg.on('mousedown', () => { })
-    // this.mindmap_svg.on('mousemove', () => { })
+
     this.addWatch()
     await this.makeCenter()
     await this.fitContent()

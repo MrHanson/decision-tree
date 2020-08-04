@@ -33,10 +33,10 @@ export default {
     ],
     nodeData: [
       {
-        name: '如何学习D3',
+        name: 'D3 Test',
         children: [
           {
-            name: '预备知识',
+            name: '知识分类',
             children: [
               { name: 'HTML & CSS' },
               { name: 'JavaScript' },
@@ -70,7 +70,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0;
+  padding: 16px;
   box-sizing: border-box;
 }
 </style>
@@ -79,7 +79,6 @@ body {
 .decision-tree {
   width: 60%;
   margin: 0 auto;
-  height: 100%;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   .operation {
