@@ -196,10 +196,12 @@ export default {
       }
     ],
     selectedOption: 0,
+
     mindmap_svg: Object,
     mindmap_g: Object,
     dummy: Object,
     mindmapSvgZoom: Function,
+
     easePolyInOut: d3
       .transition()
       .duration(1000)
@@ -245,6 +247,7 @@ export default {
       this.toRecord ? this.history.record(JSON.parse(JSON.stringify(mmdata.data))) : null
       this.updateMindmap()
       this.toUpdate = false
+
       this.$emit('change', [mmdata.getSource()])
     },
     init() {
@@ -552,6 +555,14 @@ export default {
         this.removeSelectedId()
         n.setAttribute('id', 'selectedNode')
       }
+
+      this.getSelectedNodeInfo()
+    },
+    getSelectedNodeInfo() {
+      // to do: 触发回传点击节点信息事件
+      d3.select('g#selectedNode').each((d, i, n) => {
+        console.log(d, i, n)
+      })
     },
     editNode(n) {
       // 编辑节点
@@ -1199,7 +1210,6 @@ export default {
         newVal => {
           if (this.toUpdate) {
             mmdata = new ImData(newVal[0], this.getTextSize)
-            console.log(mmdata)
             this.updateMmdata()
           } else {
             this.toUpdate = true

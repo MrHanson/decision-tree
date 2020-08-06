@@ -36,13 +36,13 @@ export default {
         name: 'D3 Test',
         children: [
           {
-            name: '知识分类',
+            name: 'C1',
             children: [
-              { name: 'HTML & CSS' },
-              { name: 'JavaScript' },
-              { name: 'DOM' },
-              { name: 'SVG' },
-              { name: 'test' }
+              { name: 'C1' },
+              { name: 'C2' },
+              { name: 'C3' },
+              { name: 'C4' },
+              { name: 'C5' }
             ]
           }
         ]
