@@ -40,6 +40,13 @@ function getTarget(idList = [], nodeData) {
   return tar
 }
 
+const IDX_MAP = {
+  1: '一',
+  2: '二',
+  3: '三',
+  4: '四'
+}
+
 export default {
   name: 'decision-tree',
 
@@ -57,12 +64,7 @@ export default {
     ],
     nodeData: [
       {
-        name: 'Root',
-        children: [
-          {
-            name: 'Father'
-          }
-        ]
+        name: '起点'
       }
     ],
 
@@ -96,6 +98,16 @@ export default {
     new Array(5).fill().forEach((_, index) => {
       this.tagList.push({ label: index, value: index })
     })
+
+    const mockData = new Array(4).fill().map((item, idx) => ({
+      name: `分支${IDX_MAP[idx + 1]}`,
+      children: [
+        {
+          name: `结果${IDX_MAP[idx + 1]}`
+        }
+      ]
+    }))
+    this.nodeData[0].children = mockData
   }
 }
 </script>
