@@ -2,23 +2,47 @@
   <div class="decision-tree">
     <div class="operation">
       <div class="operation-row">
-        <div class="operation-row-item" v-for="tag in tagList" :key="tag.label">
-          {{ tag.label }}
-        </div>
+        <div
+          class="operation-row-item"
+          v-for="tag in tagList"
+          :key="tag.label"
+          @click="onAddLabel(tag.value, 'tag')"
+        >{{tag.label}}</div>
       </div>
       <div class="operation-row">
-        <div class="operation-row-item" v-for="sign in signList" :key="sign.label">
-          {{ sign.label }}
-        </div>
+        <div
+          class="operation-row-item"
+          v-for="sign in signList"
+          :key="sign.label"
+          @click="onAddLabel(sign.value, 'sign')"
+        >{{ sign.label }}</div>
       </div>
     </div>
-    <mind-map ref="mindMap" class="mind-map" v-model="nodeData"></mind-map>
+    <mind-map ref="mindMap" class="mind-map" v-model="nodeData" @selected="onSelected"></mind-map>
   </div>
 </template>
 
 <script>
 import MindMap from './components/MindMap'
+
+function getTarget(idList = [], nodeData) {
+  let tar
+  if (!idList.length) {
+    tar = nodeData[0]
+    return tar
+  }
+
+  let rt = nodeData[0]
+  idList.forEach(id => {
+    if (!Array.isArray(rt.children)) return
+    rt = tar = rt.children[+id]
+  })
+  return tar
+}
+
 export default {
+  name: 'decision-tree',
+
   components: { MindMap },
   data: () => ({
     tagList: [
@@ -33,33 +57,45 @@ export default {
     ],
     nodeData: [
       {
-        name: 'D3 Test',
+        name: 'Root',
         children: [
           {
-            name: 'C1',
-            children: [
-              { name: 'C1' },
-              { name: 'C2' },
-              { name: 'C3' },
-              { name: 'C4' },
-              { name: 'C5' }
-            ]
+            name: 'Father'
           }
         ]
       }
-    ]
+    ],
+
+    selectedId: ''
   }),
+
+  methods: {
+    addMindNode(val) {
+      this.$refs['mindMap'].makeNodeAdd(val)
+    },
+    onSelected(id) {
+      this.selectedId = id
+    },
+    onAddLabel(val) {
+      if (!this.selectedId) return
+
+      const idList = this.selectedId.split('-')
+      // 根结点出队列
+      idList.shift()
+
+      const tar = getTarget(idList, this.nodeData)
+      console.log(tar, val)
+      
+      const node = { name: val, children: [] }
+      Array.isArray(tar.children) && tar.children.unshift(node)
+      this.selectedId = ''
+    }
+  },
 
   created() {
     new Array(5).fill().forEach((_, index) => {
       this.tagList.push({ label: index, value: index })
     })
-  },
-
-  methods: {
-    addMindNode(val) {
-      this.$refs['mindMap'].makeNodeAdd(val)
-    }
   }
 }
 </script>

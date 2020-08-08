@@ -559,9 +559,10 @@ export default {
       this.getSelectedNodeInfo()
     },
     getSelectedNodeInfo() {
-      // to do: 触发回传点击节点信息事件
-      d3.select('g#selectedNode').each((d, i, n) => {
-        console.log(d, i, n)
+      const that = this
+      d3.select('g#selectedNode').each(flexNode => {
+        if (!flexNode.data || !flexNode.data.id) return
+        that.$emit('selected', flexNode.data.id)
       })
     },
     editNode(n) {
